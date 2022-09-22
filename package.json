@@ -1,0 +1,24 @@
+{
+  "name": "yt-tg-bot-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "cron": "^2.1.0",
+    "dotenv": "^16.0.2",
+    "node-telegram-bot-api": "^0.59.0",
+    "node-telegram-keyboard-wrapper": "^3.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
