@@ -201,10 +201,10 @@ const createTimeTable = today => {
     ${lesson?.third.isLecture3 ? "🟢 <i>(Ma'ruza)</i>" : "🔴 <i>(Amaliy)</i>"} [ <u>${lesson?.third.room3}</u> ]`
 }
 
-const timeTable = createTimeTable(today)
 
 const job = new CronJob(
     '0 0 6 * * *', () => chatIds.forEach(chatId => {
+        const timeTable = createTimeTable(today)
         if (timeTable === 'dice') {
             bot.sendDice(chatId)
         } else {
