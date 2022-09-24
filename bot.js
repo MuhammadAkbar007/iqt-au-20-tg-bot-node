@@ -30,8 +30,7 @@ bot.on('message', msg => {
 
     if (msg.text === '/start') {
         job.start()
-        bot.sendMessage(chatId, `Bismillah ${username}`)
-        // bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
+        bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
         if (!chatIds.includes(chatId)) chatIds.push(chatId)
         createTimeTable(today) === 'dice' ? bot.sendDice(chatId) : bot.sendMessage(chatId, sendingMsg, { parse_mode: 'HTML' })
     }
@@ -46,7 +45,7 @@ bot.on('message', msg => {
     }
 
     if (msg.text === '/kun') {
-        bot.sendMessage(chatId, ('Kunlik jadval'), {
+        bot.sendMessage(chatId, ('Kunni tanlang'), {
             reply_markup: {
                 remove_keyboard: true,
                 one_time_keyboard: true,
