@@ -1,6 +1,6 @@
 import TelegramBot from 'node-telegram-bot-api'
 import dotenv from 'dotenv'
-import { CronJob, time } from 'cron'
+import { CronJob } from 'cron'
 import * as myDays from './constants.js'
 
 dotenv.config()
@@ -29,9 +29,9 @@ bot.on('message', msg => {
     if (msg.text === '/stop') chatIds.pop(chatId)
 
     if (msg.text === '/start') {
+        job.start()
         bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
         if (!chatIds.includes(chatId)) chatIds.push(chatId)
-        job.start()
     }
 
     if (msg.text === '/bugun') {
