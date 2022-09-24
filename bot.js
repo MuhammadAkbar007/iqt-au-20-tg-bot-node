@@ -32,7 +32,8 @@ bot.on('message', msg => {
         job.start()
         bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
         if (!chatIds.includes(chatId)) chatIds.push(chatId)
-        createTimeTable(today) === 'dice' ? bot.sendDice(chatId) : bot.sendMessage(chatId, sendingMsg, { parse_mode: 'HTML' })
+        const sendingMsg = createTimeTable(today)
+        sendingMsg === 'dice' ? bot.sendDice(chatId) : bot.sendMessage(chatId, sendingMsg, { parse_mode: 'HTML' })
     }
 
     if (msg.text === '/bugun') {
