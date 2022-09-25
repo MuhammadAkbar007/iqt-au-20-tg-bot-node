@@ -205,7 +205,7 @@ const createTimeTable = today => {
 
 
 const job = new CronJob(
-    '0 0 6 * * *', () => chatIds.forEach(chatId => {
+    '0 0 1 * * *', () => chatIds.forEach(chatId => {
         const timeTable = createTimeTable(today)
         if (timeTable === 'dice') {
             bot.sendDice(chatId)
