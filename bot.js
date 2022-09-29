@@ -7,6 +7,8 @@ dotenv.config()
 
 const bot = new TelegramBot(process.env.TOKEN, { polling: true })
 
+bot.on('polling_error', console.log)
+
 bot.setMyCommands([
     { command: '/start', description: 'Botni ishga tushirish' },
     { command: '/bugun', description: "Bugungi jadvalni ko'rish" },
@@ -14,10 +16,8 @@ bot.setMyCommands([
     { command: '/stop', description: "Avtomatik jadvalni to'xtatish" }
 ])
 
-bot.on('polling_error', console.log)
+const getToday = () => new Date().toLocaleString('default', { weekday: 'long' })
 
-let today = new Date().toLocaleString('default', { weekday: 'long' })
-// let today = myDays.Thursday
 let chatIds = []
 
 bot.on('message', msg => {
@@ -30,14 +30,12 @@ bot.on('message', msg => {
 
     if (msg.text === '/start') {
         job.start()
-        bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b>\n <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
+        bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
         if (!chatIds.includes(chatId)) chatIds.push(chatId)
-        const sendingMsg = createTimeTable(today)
-        sendingMsg === 'dice' ? bot.sendDice(chatId) : bot.sendMessage(chatId, sendingMsg, { parse_mode: 'HTML' })
     }
 
     if (msg.text === '/bugun') {
-        const sendingMsg = createTimeTable(today)
+        const sendingMsg = createTimeTable(getToday())
         if (sendingMsg === 'dice') {
             bot.sendDice(chatId)
         } else {
@@ -46,7 +44,7 @@ bot.on('message', msg => {
     }
 
     if (msg.text === '/kun') {
-        bot.sendMessage(chatId, ('Kunni tanlang'), {
+        bot.sendMessage(chatId, 'Kunlik jadval', {
             reply_markup: {
                 remove_keyboard: true,
                 one_time_keyboard: true,
@@ -60,19 +58,19 @@ bot.on('message', msg => {
                     [ /* 2nd row */
                         { text: 'Juma', callback_data: 'Friday' },
                         { text: 'Shanba', callback_data: 'Saturday' }
-                    ],
+                    ]
                 ]
             }
         })
     }
 
-    bot.on('callback_query', msg => {
-        bot.sendMessage(chatId, createTimeTable(msg.data), { parse_mode: 'HTML' })
-    })
 })
+
+bot.on('callback_query', msg => bot.sendMessage(msg.from.id, createTimeTable(msg.data), { parse_mode: 'HTML' }))
 
 const createTimeTable = today => {
     let day = ''
+
     let lesson = {
         first: {
             name1: '',
@@ -190,6 +188,7 @@ const createTimeTable = today => {
         default:
             return 'dice'
     }
+
     return ` 🕴<b>${day}: 3 para</b>
     ➖➖➖➖➖➖➖➖➖➖➖➖
     1️⃣ ${lesson?.first.name1}
@@ -203,10 +202,9 @@ const createTimeTable = today => {
     ${lesson?.third.isLecture3 ? "🟢 <i>(Ma'ruza)</i>" : "🔴 <i>(Amaliy)</i>"} [ <u>${lesson?.third.room3}</u> ]`
 }
 
-
 const job = new CronJob(
     '0 0 1 * * *', () => chatIds.forEach(chatId => {
-        const timeTable = createTimeTable(today)
+        const timeTable = createTimeTable(getToday())
         if (timeTable === 'dice') {
             bot.sendDice(chatId)
         } else {
