@@ -19,7 +19,6 @@ bot.setMyCommands([
 const getToday = () => new Date().toLocaleString('default', { weekday: 'long' })
 
 let chatIds = []
-job.start()
 
 bot.on('message', msg => {
 
@@ -212,3 +211,5 @@ const job = new CronJob(
         }
     }), null, true
 )
+
+job.start()
