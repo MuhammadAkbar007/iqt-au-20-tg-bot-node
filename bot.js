@@ -19,6 +19,7 @@ bot.setMyCommands([
 const getToday = () => new Date().toLocaleString('default', { weekday: 'long' })
 
 let chatIds = []
+job.start()
 
 bot.on('message', msg => {
 
@@ -29,7 +30,6 @@ bot.on('message', msg => {
     if (msg.text === '/stop') chatIds.pop(chatId)
 
     if (msg.text === '/start') {
-        job.start()
         bot.sendMessage(chatId, `Assalomu alaykum, <b>${first_name}</b> <i>{ ${username} }</i>. \nSizga har kuni dars jadvali berib boriladi.`, { parse_mode: 'HTML' })
         if (!chatIds.includes(chatId)) chatIds.push(chatId)
     }
